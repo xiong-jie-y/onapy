@@ -5,6 +5,11 @@ Onapy contains, you know, masturbator motion detector and sound player based on 
 
 Ona comes from Japanese name of the masturbator "Onahole".
 
+## Requirements
+* GPU
+* Depth camera from realsense series (D435i or something)
+* masturbator
+
 ## Installation
 Please install appropriate torch and mmcv version.
 
