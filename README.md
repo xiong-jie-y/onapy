@@ -4,6 +4,7 @@ Onapy contains, you know, masturbator motion detector and sound player based on 
 ![](main_image.gif)
 
 Ona comes from Japanese name of the masturbator "Onahole".
+Please see this [presentation](https://www.youtube.com/watch?v=W3vWto6AU9Y&t=5s) for detailed explanation of Open Onaho Project.
 
 ## Requirements
 * GPU
