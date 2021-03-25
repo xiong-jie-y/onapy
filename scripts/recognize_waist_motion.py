@@ -1,0 +1,40 @@
+"""Script to recognize waist forward/backward motion.
+
+Forward/backward motion of waist is common in sex.
+This script can recognize such motion from Realsense T265.
+
+Please attach T265 to waist and try it.
+"""
+import pyrealsense2 as rs
+import cv2
+import numpy as np
+import json
+
+from onaho_controller.motion_recognizer import MotionLineDetector, VelocityBasedInsertionEstimatorOption, VelocityBasedInsertionEstimator
+
+def realsense_vec_to_list(vec):
+    return np.array([vec.x, vec.y, vec.z])
+
+pipe = rs.pipeline()
+
+cfg = rs.config()
+cfg.enable_stream(rs.stream.pose)
+
+pipe.start(cfg)
+
+motion_line_detector = MotionLineDetector()
+option = VelocityBasedInsertionEstimatorOption()
+option.forward_backward_velocity_threashold = 0.7
+option.sound_wait_time = 10
+state_estimator = VelocityBasedInsertionEstimator(option)
+
+while True:
+    frames = pipe.wait_for_frames()
+    pose = frames.get_pose_frame()
+    if pose:
+        data = pose.get_pose_data()
+        position = realsense_vec_to_list(data.translation)
+        line = motion_line_detector.get_next_line(position)
+
+        if line is not None:
+            state_estimator.add_current_state(line, position)

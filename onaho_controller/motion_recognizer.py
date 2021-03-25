@@ -94,22 +94,27 @@ class OnahoStateEstimator:
                 self.remaining_wait = 30
             self.remaining_wait -= 1
 
-class VelocityBasedInsertionEstimator:
-    WAIT_TIME = 5
+from dataclasses import dataclass
 
-    FOWARD_BACKWARD_VELOCITY_THRESHOLD = 0.35
-    NO_MOTION_VELOCITY_THRESHOLD = 0.20
+@dataclass
+class VelocityBasedInsertionEstimatorOption:
+    forward_backward_velocity_threashold: float = 0.35
+    no_motion_velocity_threashold: float = 0.20
+    sound_wait_time: int = 5
+
+class VelocityBasedInsertionEstimator:
     
     class OnahoState(enum.Enum):
         INSERTING = "inserting"
         OUTGOING = "outgoing"
         NO_MOTION = "no_motion"
 
-    def __init__(self):
+    def __init__(self, option=VelocityBasedInsertionEstimatorOption()):
         self.previous_center = None
         self.previous_time = None
         self.remaining_wait = 0
         self.state = self.OnahoState.NO_MOTION
+        self.option = option
 
         # For Debug.
         self.velocities = []
@@ -122,17 +127,17 @@ class VelocityBasedInsertionEstimator:
 
             move_distance = np.dot(line, center - self.previous_center)
             velocity = move_distance / delta_t
-            if velocity > self.FOWARD_BACKWARD_VELOCITY_THRESHOLD:
+            if velocity > self.option.forward_backward_velocity_threashold:
                 self.state = self.OnahoState.INSERTING
-            elif velocity < -self.FOWARD_BACKWARD_VELOCITY_THRESHOLD:
+            elif velocity < -self.option.forward_backward_velocity_threashold:
                 self.state = self.OnahoState.OUTGOING
             else:
-                if abs(velocity) < self.NO_MOTION_VELOCITY_THRESHOLD:
+                if abs(velocity) < self.option.no_motion_velocity_threashold:
                     if self.state == self.OnahoState.INSERTING:
                         if self.remaining_wait <= 0:
                             t = threading.Thread(target=play_ex)
                             t.start()
-                            self.remaining_wait = self.WAIT_TIME
+                            self.remaining_wait = self.option.sound_wait_time
                     print(self.state)
                     self.state = self.OnahoState.NO_MOTION
 
