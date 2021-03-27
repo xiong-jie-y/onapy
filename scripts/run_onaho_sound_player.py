@@ -3,10 +3,10 @@ warnings.resetwarnings()
 warnings.filterwarnings('ignore')
 
 
-from onaho_controller.motion_recognizer import MotionLineDetector, OnahoStateEstimator, VelocityBasedInsertionEstimator
-from onaho_controller.detector3d import OnahoBoundingBox3DDetector
-from onaho_controller.tracker2d import TrackDetectionFusedTracker
-from onaho_controller.tracker3d import create_tracker, get_tracker_names
+from onapy.motion_recognizer import MotionLineDetector, OnahoStateEstimator, VelocityBasedInsertionEstimator
+from onapy.detector3d import OnahoBoundingBox3DDetector
+from onapy.tracker2d import TrackDetectionFusedTracker
+from onapy.tracker3d import create_tracker, get_tracker_names
 import time
 import click
 

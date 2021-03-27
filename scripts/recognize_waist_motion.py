@@ -10,7 +10,7 @@ import cv2
 import numpy as np
 import json
 
-from onaho_controller.motion_recognizer import MotionLineDetector, VelocityBasedInsertionEstimatorOption, VelocityBasedInsertionEstimator
+from onapy.motion_recognizer import MotionLineDetector, VelocityBasedInsertionEstimatorOption, VelocityBasedInsertionEstimator
 
 def realsense_vec_to_list(vec):
     return np.array([vec.x, vec.y, vec.z])
