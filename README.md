@@ -14,8 +14,10 @@ Please see this [presentation](https://www.youtube.com/watch?v=W3vWto6AU9Y&t=5s)
 ## Installation
 
 ```bash
+# (Optional) Create python environment for onapy.
+# Install miniconda if you don't have it.
+# https://docs.conda.io/en/latest/miniconda.html
 conda create -n py38_onapy python=3.8.5
-
 conda activate py38_onapy
 
 # Please install appropriate torch and mmcv version for your pc.
