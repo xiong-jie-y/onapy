@@ -12,6 +12,16 @@ def _parse_requirements(path):
             if not (line.isspace() or line.startswith('#'))
         ]
 
+from setuptools.command.install import install
+from subprocess import getoutput
+
+class PostInstall(install):
+    pkgs = ' git+https://github.com/xiong-jie-y/remimi.git'\
+           ' git+https://github.com/xiong-jie-y/mmdetection.git'
+    def run(self):
+        install.run(self)
+        print(getoutput('pip install'+self.pkgs))
+
 requirements = _parse_requirements('requirements.txt')
 print(requirements)
 
@@ -31,5 +41,10 @@ setuptools.setup(
     keywords='perception,masturbation',
     package_data={
         "": ["configs/*.*"]
-    }
+    },
+    dependency_links=[
+        'https://github.com/xiong-jie-y/remimi.git',
+        'https://github.com/xiong-jie-y/mmdetection.git'
+    ],
+    cmdclass={'install': PostInstall}
 )
