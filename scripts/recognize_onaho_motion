@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+import os
 import warnings
 warnings.resetwarnings()
 warnings.filterwarnings('ignore')
@@ -23,13 +25,19 @@ from remimi.visualizers.sixdof import OnahoPointCloudVisualizer
 from mmdet.apis import inference_detector, init_detector
 from remimi.sensors.realsense import RealsenseD435i
 
+import sys
+
+from pkg_resources import resource_filename
+
 @click.command()
 @click.option("--tracker-name", required=True, default=get_tracker_names()[0])
 @click.option("--debug-mode", is_flag=True)
+@click.option("--sound-dir", required=True)
 # @click.option("--insertion-estimator", required=True, default=get_tracker_names()[0])
-def main(tracker_name, debug_mode):
+def main(tracker_name, debug_mode, sound_dir):
     # Just for reading intrinsics.
-    src_dataset = Open3DReconstructionDataset("configs")
+    foo_config = resource_filename("onapy", "configs")
+    src_dataset = Open3DReconstructionDataset(foo_config)
     intrinsic = src_dataset.get_intrinsic("open3d")
 
     K = src_dataset.get_intrinsic("matrix")
@@ -50,7 +58,7 @@ def main(tracker_name, debug_mode):
 
     motion_line_detector = MotionLineDetector()
     # state_estimator = OnahoStateEstimator()
-    state_estimator = VelocityBasedInsertionEstimator()
+    state_estimator = VelocityBasedInsertionEstimator(sound_dir)
 
     import warnings
     warnings.resetwarnings()

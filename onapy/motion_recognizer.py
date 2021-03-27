@@ -1,6 +1,7 @@
 from collections import deque
 import enum
 import time
+import os
 
 import numpy as np
 
@@ -109,16 +110,23 @@ class VelocityBasedInsertionEstimator:
         OUTGOING = "outgoing"
         NO_MOTION = "no_motion"
 
-    def __init__(self, option=VelocityBasedInsertionEstimatorOption()):
+    def __init__(self, sound_dir, option=VelocityBasedInsertionEstimatorOption()):
         self.previous_center = None
         self.previous_time = None
         self.remaining_wait = 0
         self.state = self.OnahoState.NO_MOTION
         self.option = option
+        self.songs = [
+            AudioSegment.from_mp3(sound_path) 
+            for sound_path in glob.glob(os.path.join(sound_dir, "*.mp3"))]
 
         # For Debug.
         self.velocities = []
         self.timestamps = []
+
+    def play_ex(self):
+        song_index = np.random.randint(0, len(self.songs))
+        play(self.songs[song_index])
 
     def add_current_state(self, line, center):
         # Just skip at the first frame.
@@ -135,7 +143,7 @@ class VelocityBasedInsertionEstimator:
                 if abs(velocity) < self.option.no_motion_velocity_threashold:
                     if self.state == self.OnahoState.INSERTING:
                         if self.remaining_wait <= 0:
-                            t = threading.Thread(target=play_ex)
+                            t = threading.Thread(target=self.play_ex)
                             t.start()
                             self.remaining_wait = self.option.sound_wait_time
                     print(self.state)

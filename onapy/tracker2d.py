@@ -1,5 +1,6 @@
 
 from collections import deque
+import os
 from onapy.tracker3d import create_tracker, get_tracker_names
 import time
 import click
@@ -54,12 +55,23 @@ class Detection2D:
         self.bounding_box = bounding_box
         self.mask = mask
 
+MODEL_ROOT_PATH = os.path.expanduser("~/.cache/onapy/models")
+
+import gdown
+
 class TrackDetectionFusedTracker:
     def __init__(self):
         device = 'cuda:0'
 
-        config_file = "configs/yolact_onaho.py"
-        checkpoint_file = "models/onaho_model.pth"
+        config_file = os.path.join(os.path.dirname(__file__), "configs/yolact_onaho.py")
+        checkpoint_file = os.path.join(MODEL_ROOT_PATH, "models/onaho_model.pth")
+
+        if not os.path.exists(checkpoint_file):
+            os.makedirs(os.path.dirname(checkpoint_file))
+            gdown.download(
+                "https://drive.google.com/uc?id=1BhFSaFhk_w0BTHrstSTMYCTrMh6FE-Gw",
+                checkpoint_file
+            )
 
         self.model = init_detector(config_file, checkpoint_file, device=device)
 

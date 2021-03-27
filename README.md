@@ -23,13 +23,7 @@ conda activate py38_onapy
 pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio===0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
 pip install mmcv-full==1.2.7 -f https://download.openmmlab.com/mmcv/dist/cu110/torch1.7.0/index.html
 
-git clone git@github.com:xiong-jie-y/onapy.git onapy
-cd onapy
-pip install -r requirements.txt
-pip install -e .
-
-# Download masturbator detection model.
-gdown https://drive.google.com/uc?id=1BhFSaFhk_w0BTHrstSTMYCTrMh6FE-Gw -O models/onaho_model.pth
+pip install onapy
 
 # Please put your favorite sounds into the folder.
 # These sound will be chosen randomly and played,
@@ -38,8 +32,15 @@ cp *.mp3 sounds/
 ```
 
 ## How to run it.
+### Recognize waist motion attached with Realsense T265
 ```bash
-python scripts/run_onaho_sound_player.py
+recognize_waist_motion  --sound-dir sounds/
+```
+Just move your waist.
+
+### Recognize masturbator motion
+```bash
+recognize_onaho_motion  --sound-dir sounds/
 ```
 
 After that, just move the masturbator.

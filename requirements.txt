@@ -1,11 +1,11 @@
--e git+https://github.com/xiong-jie-y/remimi.git#egg=remimi
-# opencv-contrib-python==4.5.1.48
+remimi @ git+https://github.com/xiong-jie-y/remimi.git#egg=remimi
 opencv-python
 click
 open3d
 numpy
 scikit-spatial
 cupoch
--e git+https://github.com/xiong-jie-y/mmdetection.git#egg=mmdet
+mmdet @ git+https://github.com/xiong-jie-y/mmdetection.git#egg=mmdet
 pydub
 pyrealsense2
+gdown
